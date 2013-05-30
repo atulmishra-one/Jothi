@@ -1,0 +1,192 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>JothiImpex</title>
+<link href="<?=base_url()?>assets/css/style.css" rel="stylesheet" type="text/css">
+<link href="<?=base_url()?>assets/css/default.css" rel="stylesheet" type="text/css"/>
+<script src="<?=site_url('Public/Js/jquery-1.6.2.min.js')?>"></script>
+<script>
+	$(document).ready(function(e) {
+        $('.delete').click(function(e) {
+			
+				if(confirm('Are Sure you, You want to remove this item?')){
+					return true;
+				}
+					return false;
+			
+            e.preventDefault();
+        });
+    });
+</script>
+<script>
+function cartCount()
+{
+		//$('#cartCount').load('./cart/total');
+		$.get('<?=base_url()?>cart/total',{},function(data){
+				$('#cartCount').html(data);
+		});
+		
+		setTimeout(cartCount, 700);
+}
+cartCount();
+</script>
+</head>
+
+
+
+<body>
+<div id="main">
+<div class="headerrew">
+<div class="header">
+
+
+<div class="logo" onClick="window.location='<?=site_url()?>'" style="cursor:pointer;"></div>
+<div class="clear"></div>
+<div class="basket"><a href="<?=base_url('cart')?>">Your Basket Item </a><span class="orange" id="cartCount"> </span>&nbsp;<img src="<?=base_url()?>assets/images/basket.png" width="16" height="13"></div>
+<div class="clear"></div>
+</div>
+</div>
+<div class="advert">
+<div class="advert-layer">
+<form action="" method="get">
+<select name="categories_id">
+	<option>All Categories</option>
+    	
+    <?php foreach( $ParentCategories as $pc ) : ?>
+    
+    		<option value="<?=$pc->CategoriesId?>"> <?=$pc->CategoriesName?></option>
+    
+    <?php endforeach; ?>
+</select>
+
+  <input type="text" name="q"  placeholder="Search for items" autocomplete="off">
+  <input type="image" name="btnk" src="<?=base_url()?>assets/images/Search-icon1.png" value="1" class="search-img" />
+ 
+</form>
+ </div>
+
+</div>
+<div class="conterner">
+<div class="menu">
+<nav>
+	<ul>
+		<li><a href="<?=site_url()?>">Home </a></li>
+		<li><a href="<?=site_url('c/virtualTour')?>">Virtual Tour</a>
+		</li>
+		<li><a href="<?=site_url('c/promotion')?>">Promotion</a>
+		</li>
+		<li><a href="<?=site_url('c/about')?>">About Jothi</a></li>
+        <li><a href="<?=site_url('c/faq')?>">FAQ </a></li>
+        <li><a href="<?=site_url('c/contactus')?>">Contact us </a></li>
+	</ul>
+</nav>
+</div>
+
+
+<div class="clear"></div>
+
+<?=$this->session->flashdata('msg')?>
+
+<div class="box">
+<form method="post" action="<?=site_url()?>cart/update">
+
+<?php if( count( $this->cart->contents() ) > 0 ): ?>
+  <h3>Your Shopping Cart Items</h3>
+  <div class="banner-main">
+  <ul>
+  <li>Item Description</li>
+   <li>Price</li>
+   <li>Qty</li>
+   <li>Remove</li>
+   <li>Total</li>
+   
+  </ul>
+  </div>
+  <div class="clear"></div>
+  <div class="banner-main-fill ">
+  
+  <?php $cur = ''; $i =1; foreach( $this->cart->contents() as $items) : ?>
+  <?php echo form_hidden($i.'[rowid]', $items['rowid']); ?>
+  <?php echo form_hidden($i.'[id]', $items['id']); ?>
+  <ul>
+  <li>
+  <?php if ($this->cart->has_options($items['rowid']) == TRUE):
+  		$op = array();
+        $op[] = $this->cart->product_options($items['rowid']);
+  		$image = $op[0]['image'];
+        $cur = $op[0]['cur'];
+   ?>
+  	<?php if( !empty($image) && file_exists('./Public/ProductImages/'.$image)):?>
+  
+  			<img src="<?=base_url()?>Public/ProductImages/<?=$image?>" width="57" height="75">
+  
+  <?php endif; endif;?>
+  
+  </li>
+   
+   <li><a href="<?=site_url('products/u/'.$items['id'].'/'.underscore($items['name']))?>"><?=$items['name']?></a></li>
+   <li> <small><?=$cur?></small>&nbsp;<?=$items['price']?></li>
+   <li> 
+   	&nbsp; <?php echo form_input(array('name' => $i.'[qty]', 'value' => $items['qty'], 'maxlength' => '3', 'size' => '1')); ?>
+   </li>
+   <li><a class="delete" href="<?=site_url('cart/remove/'.$items['rowid'].'/')?>"><img src="<?=base_url()?>assets/images/delete-bin.png" width="12" height="15"></a></li>
+  <li> <small><?=$cur?></small>&nbsp;<?php echo $this->cart->format_number($items['subtotal']); ?></li>
+  </ul>
+   <div class="clear"></div>
+   
+   <?php $i++; endforeach; ?>
+  
+   
+   <div class="clear"></div>
+  <div class="dwn-lin"></div>
+  <div class="shoppingCart_total">
+  <p><input type="submit" value="Update" class="myButton" /></p>
+  	
+   <span class="total_amount"> <small><?=$cur?></small>&nbsp;<?php echo $this->cart->format_number($this->cart->total()); ?></span>
+
+
+  
+  </div>
+  
+  </div>
+  <a href="<?=site_url('products')?>" class="gray">Add More Product</a>
+  <a href="#" class="myButton1">Check Out</a>
+  <div class="clear"></div>
+  </form>
+
+<?php else: ?>
+		&nbsp;&nbsp; <h2> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Shopping Cart is Empty!</h2>
+        	
+             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?=site_url('products')?>" class="myButton" style="margin-left:100px; font-size:16px;">Continue Shopping</a>
+            	
+                <p></p>
+            
+<?php endif;?>
+ </div>
+
+
+
+</div>
+
+<div class="clear"></div>
+
+</div>
+<div class=" fotter">
+<div class=" fotter1">
+<div class="copy">
+Copyright &copy; 2013 of Jothi-Impex .com</div>
+<ul>
+		<li><a href="<?=site_url()?>">Home </a></li>
+		<li><a href="<?=site_url('c/virtualTour')?>">Virtual Tour</a>
+		</li>
+		<li><a href="<?=site_url('c/promotion')?>">Promotion</a>
+		</li>
+		<li><a href="<?=site_url('c/about')?>">About Jothi</a></li>
+        <li><a href="<?=site_url('c/faq')?>">FAQ </a></li>
+        <li><a href="<?=site_url('c/contactus')?>">Contact us </a></li>
+	</ul>
+</div></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<?php $this->load->view('Header/header.html');?>
+
+<div class="conterner">
+
+<div id="leftfull">
+<div class="left">
+  <h4>Shop By Category</h4>
+  <ul id="MenuBar1" class="MenuBarVertical">
+  
+  		<?php foreach($cat as $c) : ?>
+		
+        		<li>
+<a href="<?=site_url('products/categories/'.$c['category_id'].'/'.str_replace("&nbsp;", "",underscore($c['name'])))?>" class="MenuBarItemSubmenu"><?=$c['name']?></a>
+                </li>
+        
+  		<?php endforeach;?>
+  
+    </ul>
+</div>
+<div class="clear"></div>
+  <div class="clear"></div>
+  <div class="left" style="height:auto;">
+  <h4>Shop By Brands</h4>
+  <ul id="MenuBar1" class="MenuBarVertical">
+  
+  		<?php foreach($getBrands as $br) : ?>
+		
+        		<li>
+<a href="<?=site_url('products/brands/'.$br['brandsId'].'/'.underscore($br['brandsName']))?>" class="MenuBarItemSubmenu"><?=$br['brandsName']?></a>
+                </li>
+        
+  		<?php endforeach;?>
+  
+    </ul>
+</div>
+<div class="clear"></div>
+<div class="clear"></div>
+  <div class="left">
+    <h4>Sidebar Links</h4>
+  <img src="<?=base_url()?>assets/images/12.jpg" width="220" height="166"></div>
+  
+  
+  
+  
+</div>
+<div class="right">
+<div class="product">
+  <h4><?=$heading?> <?php if(isset($text)) { echo "&nbsp; &gt;&nbsp; ".$text; } ?></h4>
+ 
+ <?php foreach( $products as  $j=>$p ) : ?>
+ 	
+  <div <?=($j % 3 == 2)? 'class="boxlast"': 'class="boxfirst"'?> >
+    <div class="productlist">
+    
+    <?php if( !empty($p['image']) && file_exists('./Public/ProductImages/'.$p['image']) ) : ?>
+    
+    <img src="<?=base_url()?>Public/ProductImages/<?=$p['image']?>" width="105" height="140"> 
+    
+    <?php endif; ?>
+    
+    </div>
+    <h3> <a href="<?=site_url('products/u/'.$p['pid'].'/'.underscore($p['name']))?>"> <?=$p['name']?> </a></h3>
+    <ul>
+      <li style="color:#0C0"><?=($p['qty'])? 'In Stock':''?></li>
+      <li class="cur"><?=$p['cur']?>&nbsp; <?=$p['price']?></li>
+      <li> <?=$p['dis']?> </li>
+    </ul>
+   
+    <a href="<?=site_url('cart/addToCart/'.$p['pid'].'/'.'1')?>" class="addToCart myButton" id="addToCart">add to cart</a> </div>
+    
+    
+    
+  <?php endforeach; ?>
+
+<div class="clear"></div>
+ 
+  
+  
+
+
+</div>
+<hr>
+
+
+<?=$pagination?>
+
+</div>
+
+<div class="clear"></div>
+
+</div>
+<div class=" fotter">
+<div class=" fotter1">
+<div class="copy">
+Copyright &copy; 2013 of Jothi-Impex .com</div>
+<ul>
+		<li><a href="#">Virtual Tour</a>
+		</li>
+		<li><a href="#">Promotion</a>
+		</li>
+		<li><a href="#">About Jothi</a></li>
+        <li><a href="#">FAQ </a></li>
+        <li><a href="#">Contact us </a></li>
+	</ul>
+</div></div>
+</div>
+<script type="text/javascript">
+var MenuBar1 = new Spry.Widget.MenuBar("MenuBar1", {imgRight:"SpryAssets/SpryMenuBarRightHover.gif"});
+</script>
+</body>
+</html>

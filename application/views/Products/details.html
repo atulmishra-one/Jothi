@@ -1,0 +1,254 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>JothiImpex</title>
+<link href="<?=base_url()?>assets/css/style.css" rel="stylesheet" type="text/css">
+<link href="<?=base_url()?>assets/css/default.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script type="text/javascript" src="<?=base_url()?>assets/jquery.fancybox/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
+<script type="text/javascript" src="<?=base_url()?>assets/jquery.fancybox/fancybox/jquery.fancybox-1.3.2.js"></script>
+<link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/jquery.fancybox/fancybox/jquery.fancybox-1.3.2.css" media="screen" />
+<script>
+	$(document).ready(function(e) {
+        
+			$("a[rel=example_group]").fancybox({
+				'transitionIn'		: 'none',
+				'transitionOut'		: 'none',
+				'titlePosition' 	: 'over',
+				'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+					return '<span id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+				}
+			});
+
+		
+    });
+</script>
+<script src="<?=base_url()?>assets/js/thumbnail-slider.js" type="text/javascript"></script>
+<script>
+ $(window).load(function() {
+        $('#slider').nivoSlider();
+    });
+    </script>
+ <script>
+function cartCount()
+{
+		//$('#cartCount').load('./cart/total');
+		$.get('<?=base_url()?>cart/total',{},function(data){
+				$('#cartCount').html(data);
+		});
+		
+		setTimeout(cartCount, 700);
+}
+cartCount();
+</script>
+<link href="<?=base_url()?>assets/css/slider.css" rel="stylesheet" type="text/css" />
+</head>
+
+
+
+<body>
+<div id="main">
+<div class="headerrew">
+<div class="header">
+
+
+<div class="logo" onClick="window.location='<?=site_url()?>'" style="cursor:pointer;"></div>
+<div class="clear"></div>
+<div class="basket"><a href="<?=base_url('cart')?>">Your Basket Item </a><span class="orange" id="cartCount"> </span>&nbsp;<img src="<?=base_url()?>assets/images/basket.png" width="16" height="13"></div>
+<div class="clear"></div>
+</div>
+</div>
+<div class="advert">
+<div class="advert-layer">
+<form action="" method="get">
+<select name="categories_id">
+	<option>All Categories</option>
+    	
+    <?php foreach( $ParentCategories as $pc ) : ?>
+    
+    		<option value="<?=$pc->CategoriesId?>"> <?=$pc->CategoriesName?></option>
+    
+    <?php endforeach; ?>
+</select>
+
+  <input type="text" name="q"  placeholder="Search for items" autocomplete="off">
+  <input type="image" name="btnk" src="<?=base_url()?>assets/images/Search-icon1.png" value="1" class="search-img" />
+ 
+</form>
+ </div>
+
+</div>
+<div class="conterner">
+<div class="menu">
+<nav>
+	<ul>
+		<li><a href="<?=site_url()?>">Home </a></li>
+		<li><a href="<?=site_url('c/virtualTour')?>">Virtual Tour</a>
+		</li>
+		<li><a href="<?=site_url('c/promotion')?>">Promotion</a>
+		</li>
+		<li><a href="<?=site_url('c/about')?>">About Jothi</a></li>
+        <li><a href="<?=site_url('c/faq')?>">FAQ </a></li>
+        <li><a href="<?=site_url('c/contactus')?>">Contact us </a></li>
+	</ul>
+</nav>
+</div>
+
+<div class="pro">
+
+<?php if( !empty( $pro[0]['image']) && file_exists('./Public/ProductImages/'.$pro[0]['image']) ) : ?>
+
+<img src="<?=base_url()?>Public/ProductImages/<?=$pro[0]['image']?>" />
+
+<?php endif; ?>
+
+</div>
+<div class="prodel">
+  <h3> <?=$pro[0]['name']?> </h3>
+  <div class="clear"></div>
+
+<?php if( !empty( $pro[0]['brand']) ) : ?>
+  
+  <div class="brand">
+   Brand : <span class="orange"> <?=$pro[0]['brand']?></span>
+  </div>
+
+<?php endif;?>
+ 
+  <p>
+  	
+    	<?=$pro[0]['short_details']?>
+  
+  </p>
+ 
+<span class="rsSymbol"> <?=$pro[0]['cur']?></span><span class="rup"> <?=$pro[0]['price']?></span>
+
+<?php if( !empty($pro[0]['dis']) ) :?>
+
+		<div>
+    		<span class="rsSymbol"><?=$pro[0]['dis']?></span>
+
+	 </div>
+ 
+ <?php endif;?>
+ 
+   
+	
+    <div class="ship">
+	
+   	<p>
+    	
+        <strong>Shipping Charges:</strong> 
+        
+        <?php if( $pro[0]['shipping_charge'] > 0 ) :?>
+        
+        <?=number_format($pro[0]['shipping_charge'], 2)?>
+        
+        <?php else: ?>
+        	
+            	<font color="#00CC00">Free</font>
+            
+        <?php endif; ?>
+        
+        </div>
+	
+    </p>
+
+
+	<p>
+    	<?php if( !$pro[0]['stock']) : ?>
+        	
+            <font color="#009900"> In Stock</font>
+            
+        <?php endif;?>
+    </p>
+
+<p></p>
+<div class="ship">
+<?php if( $pro[0]['qty'] > 0 ) :?>
+
+ Quantity : <select name="qty">
+ <?php for( $i = 1; $i <= $pro[0]['qty']; $i++) :?>
+ 
+ 	<?php ?>
+   <option> <?=$i?></option>  
+ 
+  <?php endfor;?>
+
+ </select>
+<?php endif; ?>
+  </div>
+<span class="orange" ></span>
+<br><br>
+  
+ <a href="<?=site_url('cart/addToCart/'.$pro[0]['pid'].'/'.'1')?>" class="myButton" style="padding:10px; font-size:12px;">Click Here to Buy Now</a> 
+  
+  </div>
+<div class="clear"></div>
+
+<?php foreach($images as $img) : 
+
+	if( !empty($img) && file_exists('./Public/ProductImages/'.$img['image']) ):
+	
+?>
+
+<a rel="example_group" href="<?=base_url()?>Public/ProductImages/<?=$img['image']?>" title=""><img src="<?=base_url()?>Public/ProductImages/<?=$img['image']?>" style="height:100px; width:100px;" /> </a>
+
+<?php endif; endforeach; ?>
+
+<hr />
+<div class="box">
+  <h3 style="font-family:Tahoma, Geneva, sans-serif;">Product Details </h3>
+  <p>
+  	<?=$pro[0]['details']?>
+  </p>
+</div>
+
+<div class="box">
+  <h3 style="font-family:Tahoma, Geneva, sans-serif;">Other Products</h3>
+  
+  	<div class="arrivals">
+  
+
+        <div id="mcts1">
+        <?php foreach( $getProductsByCats as $ar ) :
+        		if(!empty ( $ar['image']) && file_exists('./Public/ProductImages/'.$ar['image']) ):
+        ?>
+        <a href="<?=site_url('products/u/'.$ar['pid'].'/'.underscore($ar['name']))?>">
+     	    <img src="<?=base_url()?>Public/ProductImages/<?=$ar['image']?>" style="height:80px; width:108px;" />
+        </a>
+        <?php endif; endforeach; ?>   
+       
+        </div>
+    <div class="navBullets">
+  <a class="navPrev" onselectstart="return false"></a>
+<a class="navNext" onselectstart="return false"></a>
+    
+    </div>
+</div>
+  
+</div>
+</div>
+
+<div class="clear"></div>
+
+</div>
+<div class=" fotter">
+<div class=" fotter1">
+<div class="copy">
+Copyright &copy; 2008 of Jothi-Impex .com</div>
+<ul>
+		<li><a href="<?=site_url()?>">Home </a></li>
+		<li><a href="<?=site_url('c/virtualTour')?>">Virtual Tour</a>
+		</li>
+		<li><a href="<?=site_url('c/promotion')?>">Promotion</a>
+		</li>
+		<li><a href="<?=site_url('c/about')?>">About Jothi</a></li>
+        <li><a href="<?=site_url('c/faq')?>">FAQ </a></li>
+        <li><a href="<?=site_url('c/contactus')?>">Contact us </a></li>
+	</ul>
+</div></div>
+</div>
+</body>
+</html>

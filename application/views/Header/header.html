@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>JothiImpex</title>
+<link href="<?=base_url()?>assets/css/style.css" rel="stylesheet" type="text/css">
+<link href="<?=base_url()?>assets/css/slider.css" rel="stylesheet" type="text/css" />
+<link href="<?=base_url()?>assets/css/default.css" rel="stylesheet" type="text/css"/>
+<script src="<?=base_url()?>assets/js/thumbnail-slider.js" type="text/javascript"></script>
+<script src="<?=base_url()?>assets/js/jquery-1.9.0.min.js" type="text/javascript"></script>
+<script src="<?=base_url()?>assets/js/jquery.nivo.slider.js" type="text/javascript"></script>
+<script src="<?=base_url()?>assets/js/jquery.nivo.slider.js" type="text/javascript"></script>
+<script src="<?=base_url()?>assets/SpryAssets/SpryMenuBar.js" type="text/javascript"></script>
+
+<script>
+ $(window).load(function() {
+        $('#slider').nivoSlider();
+    });
+</script>
+<script src="<?=site_url('assets/js/cart.js')?>"></script>
+
+<script src="<?=site_url('Public/Js/jquery.lazyload.js')?>"></script>
+<script>
+$(document).ready(function(e) {
+    $("img.lazy").lazyload();
+});
+	
+</script>
+<style>
+	<!--
+		.panigation-menu a{
+			color:#FFF;
+			text-decoration:none;
+		}
+		.panigation-menu .active{
+			font-weight:bold;
+			color:#F60;
+		}
+	-->
+</style>
+<script>
+function cartCount()
+{
+		//$('#cartCount').load('./cart/total');
+		$.get('<?=base_url()?>cart/total',{},function(data){
+				$('#cartCount').html(data);
+		});
+		
+		setTimeout(cartCount, 700);
+}
+cartCount();
+</script>
+<link href="<?=base_url()?>assets/css/nivo-slider.css" rel="stylesheet" type="text/css">
+<link href="<?=base_url()?>assets/SpryAssets/SpryMenuBarVertical.css" rel="stylesheet" type="text/css">
+</head>
+
+
+
+<body>
+<div id="main">
+<div class="headerrew">
+<div class="header">
+
+
+<div class="logo" onClick="window.location='<?=site_url()?>'" style="cursor:pointer;"></div>
+
+<div class="clear"></div>
+<div class="basket"><a href="<?=base_url('cart')?>">Your Basket Item </a><span class="orange" id="cartCount"> </span>&nbsp;<img src="<?=base_url()?>assets/images/basket.png" width="16" height="13"></div>
+<div class="clear"></div>
+</div>
+
+
+
+</div>
+<div class="advert">
+<div class="advert-layer">
+<form action="<?=site_url('products/search')?>" method="get">
+<select name="categories_id">
+	<option value="0">All Categories</option>
+    	
+    <?php foreach( $ParentCategories as $pc ) : ?>
+    
+    		<option value="<?=$pc->CategoriesId?>"> <?=$pc->CategoriesName?></option>
+    
+    <?php endforeach; ?>
+</select>
+
+  <input type="text" name="q"  placeholder="Search for items" autocomplete="off">
+  <input type="image" name="btnk" src="<?=base_url()?>assets/images/Search-icon1.png" value="1" class="search-img" />
+ 
+</form>
+ </div>
+
+</div>
+<div class="conterner">
+<div class="menu">
+<nav>
+	<ul>
+		<li><a href="<?=site_url()?>">Home </a></li>
+		<li><a href="<?=site_url('c/virtualTour')?>">Virtual Tour</a>
+		</li>
+		<li><a href="<?=site_url('c/promotion')?>">Promotion</a>
+		</li>
+		<li><a href="<?=site_url('c/about')?>">About Jothi</a></li>
+        <li><a href="<?=site_url('c/faq')?>">FAQ </a></li>
+        <li><a href="<?=site_url('c/contactus')?>">Contact us </a></li>
+	</ul>
+</nav>
+</div>
+</div>
